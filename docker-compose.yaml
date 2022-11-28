@@ -12,6 +12,12 @@ services:
       retries: 15
     ports:
       - "80:80"
+    depends_on:
+      - "user-svc"
+      - "card-svc"
+      - "inventory-svc"
+      - "notification-svc"
+      - "reservation-svc"
 
   user-svc:
     image: joshio94/user-svc
