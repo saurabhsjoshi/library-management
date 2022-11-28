@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+
+  nginx-proxy:
+    image: joshio94/nginx-proxy
+    build: nginx-proxy
+    healthcheck:
+      test: "wget -O /dev/null http://localhost || exit 1"
+      interval: 2s
+      timeout: 2s
+      retries: 15
+    ports:
+      - "80:80"
+
+  user-svc:
+    image: joshio94/user-svc
+    build: user-svc
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health | grep UP || exit"
+      interval: 2s
+      timeout: 2s
+      retries: 10
+
+  card-svc:
+    image: joshio94/card-svc
+    build: card-svc
+    healthcheck:
+      test: "curl --fail --silent localhost:8081/actuator/health | grep UP || exit"
+      interval: 2s
+      timeout: 2s
+      retries: 10
+
+  inventory-svc:
+    image: joshio94/inventory-svc
+    build: inventory-svc
+    healthcheck:
+      test: "curl --fail --silent localhost:8082/actuator/health | grep UP || exit"
+      interval: 2s
+      timeout: 2s
+      retries: 10
+
+  notification-svc:
+    image: joshio94/notification-svc
+    build: notification-svc
+    healthcheck:
+      test: "curl --fail --silent localhost:8083/actuator/health | grep UP || exit"
+      interval: 2s
+      timeout: 2s
+      retries: 10
+
+  reservation-svc:
+    image: joshio94/reservation-svc
+    build: reservation-svc
+    healthcheck:
+      test: "curl --fail --silent localhost:8084/actuator/health | grep UP || exit"
+      interval: 2s
+      timeout: 2s
+      retries: 10

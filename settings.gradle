@@ -1,0 +1,8 @@
+rootProject.name = 'library-mgmt'
+include 'nginx-proxy'
+include 'user-svc'
+include 'inventory-svc'
+include 'reservation-svc'
+include 'notification-svc'
+include 'card-svc'
+
