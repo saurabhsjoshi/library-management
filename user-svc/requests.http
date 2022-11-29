@@ -1,0 +1,15 @@
+### Health check
+GET http://localhost/api/users/health
+Accept: application/json
+
+### Get users
+GET http://localhost/api/users/
+Accept: application/json
+
+### Get Options
+OPTIONS http://localhost:8080/api/users/
+Accept: application/json
+
+### Get users
+GET http://localhost:8080/api/users/
+Accept: application/json
