@@ -1,5 +1,6 @@
 package com.fpts.api.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -14,6 +15,7 @@ public class GetTestParameter implements Serializable {
     /**
      *
      */
+    @Serial
     private static final long serialVersionUID = -457401449569195463L;
     private final String parameter;
     private final String value;

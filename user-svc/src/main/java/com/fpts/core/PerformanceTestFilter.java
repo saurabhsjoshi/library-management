@@ -1,31 +1,25 @@
 package com.fpts.core;
 
+import com.fpts.api.annotation.PerformanceTest;
+import com.fpts.api.enums.HttpMethodEnum;
+import com.fpts.api.model.TestSpec;
+import com.fpts.api.util.JSONConverter;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
+import org.springframework.web.util.pattern.PathPattern;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-
-import jakarta.servlet.Filter;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
-import jakarta.servlet.annotation.WebFilter;
-import jakarta.servlet.http.HttpServletRequest;
-
-import com.fpts.api.annotation.PerformanceTest;
-import com.fpts.api.enums.HttpMethodEnum;
-import com.fpts.api.model.TestSpec;
-import com.fpts.api.util.JSONConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 
 /**
@@ -47,62 +41,81 @@ public class PerformanceTestFilter implements Filter {
 
     private static final String OPTIONS_METHOD_STR = "OPTIONS";
 
-    private RequestMappingHandlerMapping requestMappingHandler;
+    private final RequestMappingHandlerMapping requestMappingHandler;
+    private final ApplicationContext context;
 
-    public PerformanceTestFilter(RequestMappingHandlerMapping requestMappingHandler) {
+    public PerformanceTestFilter(RequestMappingHandlerMapping requestMappingHandler, ApplicationContext context) {
         this.requestMappingHandler = requestMappingHandler;
+        this.context = context;
     }
 
     private void extractTestSpec(RequestMappingHandlerMapping requestMappingHandler, ServletResponse response,
                                  String requestedPath) {
-        Iterator<RequestMappingInfo> infoIterator = this.requestMappingHandler.getHandlerMethods().keySet().iterator();
-        for (RequestMappingInfo info = infoIterator.next(); infoIterator.hasNext(); info = infoIterator.next()) {
-            if (info.getPatternsCondition().getPatterns().contains(requestedPath)) {
-                HandlerMethod handler = this.requestMappingHandler.getHandlerMethods().get(info);
-                List<Method> methodsWithTestAnnotation = getMethodsAnnotatedWith(handler.getBeanType(),
-                        PerformanceTest.class);
-                TestSpecification spec = null;
-                for (Method method : methodsWithTestAnnotation) {
-                    PerformanceTest perfAnnotation = method.getAnnotation(PerformanceTest.class);
-                    HttpMethodEnum httpMethod = perfAnnotation.httpMethod();
-                    String description = perfAnnotation.description();
-                    String path = perfAnnotation.path();
-                    // Check if the requested path is the same as the one
-                    // annotated in the service method
-                    if (path.equals(requestedPath)) {
-                        try {
-                            TestSpec parametersForTest = (TestSpec) method.invoke(handler.getBeanType().newInstance());
-                            String jsonSchema = JSONConverter
-                                    .getJsonSchema(parametersForTest.getTestParameter().getClass());
-                            if (spec != null) {
-                                TestSpecification.joinSpec(spec, httpMethod, description,
-                                        parametersForTest.getTestParameter(), parametersForTest.getValidationData(),
-                                        jsonSchema);
-                            } else {
-                                spec = TestSpecification.build(httpMethod, description,
-                                        parametersForTest.getTestParameter(), parametersForTest.getValidationData(),
-                                        jsonSchema);
-                            }
-                            if (logger.isDebugEnabled()) {
-                                logger.debug("Generated spec: " + spec.getSpec().toString());
-                            }
 
-                        } catch (Exception e) {
-                            logger.error("Error while writing response to OPTIONS request", e);
+        for (var info : requestMappingHandler.getHandlerMethods().keySet()) {
+
+            if (info.getPathPatternsCondition() == null) {
+                continue;
+            }
+
+            var match = info.getPathPatternsCondition()
+                    .getPatterns()
+                    .stream()
+                    .map(PathPattern::toString)
+                    .anyMatch(s -> s.equals(requestedPath));
+
+            if (!match) {
+                continue;
+            }
+
+            HandlerMethod handler = requestMappingHandler.getHandlerMethods().get(info);
+
+            List<Method> methodsWithTestAnnotation = getMethodsAnnotatedWith(handler.getBeanType(),
+                    PerformanceTest.class);
+
+            TestSpecification spec = null;
+            for (Method method : methodsWithTestAnnotation) {
+                PerformanceTest perfAnnotation = method.getAnnotation(PerformanceTest.class);
+                HttpMethodEnum httpMethod = perfAnnotation.httpMethod();
+                String description = perfAnnotation.description();
+                String path = perfAnnotation.path();
+                // Check if the requested path is the same as the one
+                // annotated in the service method
+                if (path.equals(requestedPath)) {
+                    try {
+
+
+                        TestSpec parametersForTest = (TestSpec) method.invoke(context.getBean(handler.getBeanType()));
+
+                        String jsonSchema = JSONConverter
+                                .getJsonSchema(parametersForTest.getTestParameter().getClass());
+                        if (spec != null) {
+                            TestSpecification.joinSpec(spec, httpMethod, description,
+                                    parametersForTest.getTestParameter(), parametersForTest.getValidationData(),
+                                    jsonSchema);
+                        } else {
+                            spec = TestSpecification.build(httpMethod, description,
+                                    parametersForTest.getTestParameter(), parametersForTest.getValidationData(),
+                                    jsonSchema);
                         }
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Generated spec: " + spec.getSpec().toString());
+                        }
+
+                    } catch (Exception e) {
+                        logger.error("Error while writing response to OPTIONS request", e);
                     }
-                }
-                try {
-                    if (spec != null) {
-                        response.getOutputStream().write(spec.getSpec().toString().getBytes());
-                        return;
-                    }
-                } catch (IOException e) {
-                    logger.error("Error while writing response to OPTIONS request", e);
                 }
             }
+            try {
+                if (spec != null) {
+                    response.getOutputStream().write(spec.getSpec().toString().getBytes());
+                    return;
+                }
+            } catch (IOException e) {
+                logger.error("Error while writing response to OPTIONS request", e);
+            }
         }
-
     }
 
     private static List<Method> getMethodsAnnotatedWith(final Class<?> type,

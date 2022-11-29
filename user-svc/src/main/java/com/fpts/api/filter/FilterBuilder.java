@@ -1,5 +1,6 @@
 package com.fpts.api.filter;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 /**
@@ -11,7 +12,8 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  */
 public class FilterBuilder {
 
-    public static jakarta.servlet.Filter buildPerformanceFilter(RequestMappingHandlerMapping requestMappingHandler) {
+    public static jakarta.servlet.Filter buildPerformanceFilter(RequestMappingHandlerMapping requestMappingHandler,
+                                                                ApplicationContext context) {
         Class filter;
         try {
             filter = Class.forName("com.fpts.core.PerformanceTestFilter");
@@ -21,8 +23,8 @@ public class FilterBuilder {
             return new DummyFilter();
         }
         try {
-            return (jakarta.servlet.Filter) filter.getConstructor(RequestMappingHandlerMapping.class)
-                    .newInstance(requestMappingHandler);
+            return (jakarta.servlet.Filter) filter.getConstructor(RequestMappingHandlerMapping.class, ApplicationContext.class)
+                    .newInstance(requestMappingHandler, context);
         } catch (Exception e) {
             return new DummyFilter();
         }
