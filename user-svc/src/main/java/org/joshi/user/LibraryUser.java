@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 /**
  * Class that represents a user in database.
  */
@@ -15,8 +17,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class LibraryUser {
+public class LibraryUser implements Serializable {
     @Id
     private String username;
     private String password;
+
+    private String displayName;
 }
