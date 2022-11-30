@@ -5,4 +5,5 @@ include 'inventory-svc'
 include 'reservation-svc'
 include 'notification-svc'
 include 'card-svc'
+include 'raat'
 
