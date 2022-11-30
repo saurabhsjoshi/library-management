@@ -7,7 +7,7 @@ GET http://localhost/api/users/
 Accept: application/json
 
 ### Get Options
-OPTIONS http://localhost:8080/api/users/
+OPTIONS http://localhost/api/users/
 Accept: application/json
 
 ### Get users

@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17.0.5_8-jre-alpine
+FROM --platform=linux/amd64 eclipse-temurin:17.0.5_8-jre-alpine
 
 RUN apk --no-cache add curl
 
