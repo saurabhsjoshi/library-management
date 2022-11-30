@@ -10,6 +10,13 @@ repositories {
 }
 
 dependencies {
+    // Docker communication libraries
+    testImplementation 'com.github.docker-java:docker-java-transport-httpclient5:3.2.14'
+    testImplementation 'com.github.docker-java:docker-java-core:3.2.14'
+
+    testImplementation 'org.slf4j:slf4j-api:2.0.5'
+    testImplementation 'org.slf4j:slf4j-simple:2.0.5'
+
     testImplementation 'io.cucumber:cucumber-java:7.8.1'
     testImplementation 'io.cucumber:cucumber-junit-platform-engine:7.8.1'
 
