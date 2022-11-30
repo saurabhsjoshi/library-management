@@ -1,6 +1,7 @@
 package org.joshi.raata.steps.common;
 
 import com.github.dockerjava.api.DockerClient;
+import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientConfig;
@@ -9,12 +10,14 @@ import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
+import org.junit.jupiter.api.Assertions;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class SystemSteps {
@@ -60,6 +63,20 @@ public class SystemSteps {
         return DockerClientImpl.getInstance(config, httpClient);
     }
 
+    public static Stream<Container> getRunningContainers(DockerClient dockerClient) {
+        return dockerClient.listContainersCmd()
+                .exec()
+                .stream()
+                .filter(c -> {
+                    for (var i : CONTAINERS) {
+                        if (c.getNames()[0].contains(i)) {
+                            return true;
+                        }
+                    }
+                    return false;
+                });
+    }
+
     /**
      * Method that connects to Docker daemon and retrieves running list of containers and networks corresponding to this
      * application.
@@ -69,18 +86,8 @@ public class SystemSteps {
     private static List<String> getRunningServices() {
         var dockerClient = getDockerClient();
 
-        var containers = dockerClient.listContainersCmd()
-                .exec()
-                .stream()
-                .flatMap(c -> Arrays.stream(c.getNames()))
-                .filter(c -> {
-                    for (var i : CONTAINERS) {
-                        if (c.contains(i)) {
-                            return true;
-                        }
-                    }
-                    return false;
-                });
+        var containers = getRunningContainers(dockerClient)
+                .flatMap(c -> Arrays.stream(c.getNames()));
 
         var networks = dockerClient.listNetworksCmd()
                 .exec()
@@ -115,6 +122,35 @@ public class SystemSteps {
             processBuilder.start().waitFor();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
+        }
+
+        Pattern pattern = Pattern.compile("\\(healthy\\)");
+
+        var dockerClient = getDockerClient();
+
+        // Wait for 10 seconds
+        long retryPeriod = Duration.ofSeconds(10).toMillis();
+        long currentPeriod = 0;
+
+        long healthy = 0;
+        System.out.println("Waiting for all containers to be healthy.");
+        while (healthy != CONTAINERS.size()) {
+
+            if (currentPeriod > retryPeriod) {
+                Assertions.fail("Containers were not healthy after '" + retryPeriod + "' milliseconds");
+                return;
+            }
+
+            healthy = getRunningContainers(dockerClient)
+                    .filter(c -> pattern.matcher(c.getStatus()).find())
+                    .count();
+            try {
+                var sleepPeriod = 500;
+                currentPeriod += sleepPeriod;
+                Thread.sleep(sleepPeriod);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
