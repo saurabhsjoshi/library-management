@@ -3,6 +3,7 @@ package org.joshi.raata.steps.service.user;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.core5.http.HttpStatus;
 import org.apache.hc.core5.http.io.entity.StringEntity;
@@ -36,8 +37,10 @@ public class UserSvcStepDefs {
     }
 
     @And("Admin fetches the user with username {string}")
-    public void adminFetchesUser(String username) {
-        System.out.println("Fetched user with name " + username);
+    public void adminFetchesUser(String username) throws IOException {
+        var client = RestClient.getClient();
+        var response = client.execute(new HttpGet(USERS_API + username));
+        Assertions.assertEquals(HttpStatus.SC_OK, response.getCode());
     }
 
     @Then("The fetched user should have username the following")
