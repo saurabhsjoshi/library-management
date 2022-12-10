@@ -1,0 +1,9 @@
+server:
+  port: 8082
+
+user-svc-uri: http://localhost:8080
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop

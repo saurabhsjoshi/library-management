@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="InventoryApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
-    <option name="ACTIVE_PROFILES" />
+    <option name="ACTIVE_PROFILES" value="local" />
     <module name="library-mgmt.inventory-svc.main" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="org.joshi.inventory.InventoryApplication" />
     <method v="2">
