@@ -1,0 +1,273 @@
+{
+	"version": 1,
+	"collections": [
+		{
+			"id": "24717a6b-f264-4b93-8517-a5e7ab68b517",
+			"uid": "0-24717a6b-f264-4b93-8517-a5e7ab68b517",
+			"name": "Inventory Service",
+			"description": null,
+			"auth": null,
+			"events": null,
+			"variables": [],
+			"order": [
+				"aa261d17-c95a-4b71-8e8c-1b5d880da82d",
+				"0076fb03-d68a-47b2-8e85-0df6702e8827",
+				"4085f3ca-b0fc-4fd1-a2b6-c1c7421b11d0",
+				"4ddb24dd-e0db-4738-8827-17584b795231",
+				"7169e5d8-a676-49b8-ae73-848adbc3d6b9",
+				"c9463e88-ae31-435d-ba31-f7a8626faa28"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {},
+			"createdAt": "2022-12-10T16:02:49.545Z",
+			"folders": [],
+			"requests": [
+				{
+					"id": "0076fb03-d68a-47b2-8e85-0df6702e8827",
+					"uid": "0-0076fb03-d68a-47b2-8e85-0df6702e8827",
+					"name": "Books",
+					"url": "{{host}}{{inventory_port}}/api/inventory/",
+					"description": "",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": null,
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "24717a6b-f264-4b93-8517-a5e7ab68b517",
+					"pathVariables": {}
+				},
+				{
+					"id": "4085f3ca-b0fc-4fd1-a2b6-c1c7421b11d0",
+					"uid": "0-4085f3ca-b0fc-4fd1-a2b6-c1c7421b11d0",
+					"name": "Books By Name",
+					"url": "{{host}}{{inventory_port}}/api/inventory/TestBook",
+					"description": "",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": null,
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "24717a6b-f264-4b93-8517-a5e7ab68b517",
+					"pathVariables": {}
+				},
+				{
+					"id": "4ddb24dd-e0db-4738-8827-17584b795231",
+					"uid": "0-4ddb24dd-e0db-4738-8827-17584b795231",
+					"name": "Book",
+					"url": "{{host}}{{inventory_port}}/api/inventory/TestBook",
+					"description": null,
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [
+						{
+							"key": "username",
+							"value": "admin",
+							"description": "",
+							"type": "default",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"description": "",
+							"type": "default",
+							"enabled": true
+						}
+					],
+					"method": "DELETE",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "24717a6b-f264-4b93-8517-a5e7ab68b517",
+					"rawModeData": "{\n    \"bookName\" : \"TestBook\",\n    \"author\" : \"TestAuthor\",\n    \"publishYear\" : 1994,\n    \"quantity\" : 1\n}",
+					"headers": "username: admin\npassword: admin\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "7169e5d8-a676-49b8-ae73-848adbc3d6b9",
+					"uid": "0-7169e5d8-a676-49b8-ae73-848adbc3d6b9",
+					"name": "Add Book",
+					"url": "{{host}}{{inventory_port}}/api/inventory/TestBook/add",
+					"description": null,
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [
+						{
+							"key": "username",
+							"value": "admin",
+							"description": "",
+							"type": "default",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"description": "",
+							"type": "default",
+							"enabled": true
+						}
+					],
+					"method": "POST",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "24717a6b-f264-4b93-8517-a5e7ab68b517",
+					"rawModeData": "{\n    \"quantity\" : 1\n}",
+					"headers": "username: admin\npassword: admin\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "aa261d17-c95a-4b71-8e8c-1b5d880da82d",
+					"uid": "0-aa261d17-c95a-4b71-8e8c-1b5d880da82d",
+					"name": "Book",
+					"url": "{{host}}{{inventory_port}}/api/inventory/",
+					"description": null,
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [
+						{
+							"key": "username",
+							"value": "admin",
+							"description": "",
+							"type": "default",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"description": "",
+							"type": "default",
+							"enabled": true
+						}
+					],
+					"method": "POST",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "24717a6b-f264-4b93-8517-a5e7ab68b517",
+					"rawModeData": "{\n    \"bookName\" : \"TestBook\",\n    \"author\" : \"TestAuthor\",\n    \"publishYear\" : 1994,\n    \"quantity\" : 1\n}",
+					"headers": "username: admin\npassword: admin\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "c9463e88-ae31-435d-ba31-f7a8626faa28",
+					"uid": "0-c9463e88-ae31-435d-ba31-f7a8626faa28",
+					"name": "Remove Book",
+					"url": "{{host}}{{inventory_port}}/api/inventory/TestBook/remove",
+					"description": null,
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": null,
+					"method": "POST",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "24717a6b-f264-4b93-8517-a5e7ab68b517",
+					"rawModeData": "{\n    \"quantity\" : 1\n}",
+					"pathVariables": {}
+				}
+			]
+		}
+	],
+	"environments": [
+		{
+			"id": "11e33839-9308-4dd3-a08d-120b81d283b6",
+			"name": "Localhost",
+			"values": [
+				{
+					"key": "host",
+					"value": "http://localhost",
+					"type": "default",
+					"enabled": true
+				},
+				{
+					"key": "inventory_port",
+					"value": ":8082",
+					"type": "default",
+					"enabled": true
+				}
+			]
+		},
+		{
+			"id": "7eda8152-32f0-4d37-95be-163c29c60a90",
+			"name": "Nginx",
+			"values": [
+				{
+					"key": "host",
+					"value": "http://localhost",
+					"type": "default",
+					"enabled": true
+				},
+				{
+					"key": "inventory_port",
+					"value": "",
+					"type": "default",
+					"enabled": true
+				}
+			]
+		},
+		{
+			"id": "34f2f504-5a31-4289-b29e-3deed73c6364",
+			"name": "My Workspace - globals",
+			"values": []
+		}
+	],
+	"headerPresets": [],
+	"globals": []
+}
