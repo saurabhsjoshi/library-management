@@ -36,7 +36,7 @@ public class InventorySvcStepDefs {
         var data = dataTable.asMap(String.class, String.class);
         var post = getAuthPostReq(INVENTORY_API, data);
         try (var response = RestClient.getClient().execute(post)) {
-            assertEquals(HttpStatus.SC_CREATED, response.getCode());
+            TestData.getInstance().data = String.valueOf(response.getCode());
         }
     }
 
@@ -59,5 +59,12 @@ public class InventorySvcStepDefs {
         var resp = objectMapper.readValue(TestData.getInstance().data, typeRef);
 
         assertEquals(data, resp);
+    }
+
+    @Then("I get an {string} error")
+    public void iGetAnUnauthorizedErrorWithStatus(String error) {
+        if (error.equals("Unauthorized")) {
+            assertEquals("401", TestData.getInstance().data);
+        }
     }
 }
