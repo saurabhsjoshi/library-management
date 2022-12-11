@@ -10,13 +10,36 @@
 			"events": null,
 			"variables": [],
 			"order": [
-				"ed097829-5cab-4871-bb61-68b2a6571fe8"
+				"ed097829-5cab-4871-bb61-68b2a6571fe8",
+				"590304fd-8833-4299-8545-35f8d250f070"
 			],
 			"folders_order": [],
 			"protocolProfileBehavior": {},
 			"createdAt": "2022-12-10T21:29:18.629Z",
 			"folders": [],
 			"requests": [
+				{
+					"id": "590304fd-8833-4299-8545-35f8d250f070",
+					"uid": "0-590304fd-8833-4299-8545-35f8d250f070",
+					"name": "Users",
+					"url": "{{host}}{{user_port}}/api/users/admin",
+					"description": null,
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": null,
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "186f9df7-1bbb-4e23-9038-03cf96138aeb",
+					"pathVariables": {}
+				},
 				{
 					"id": "ed097829-5cab-4871-bb61-68b2a6571fe8",
 					"uid": "0-ed097829-5cab-4871-bb61-68b2a6571fe8",
@@ -263,6 +286,151 @@
 					"pathVariables": {}
 				}
 			]
+		},
+		{
+			"id": "4026c785-4d8a-43a2-8781-b5ebf45792cf",
+			"uid": "0-4026c785-4d8a-43a2-8781-b5ebf45792cf",
+			"name": "Reservation Service",
+			"description": null,
+			"auth": null,
+			"events": null,
+			"variables": [],
+			"order": [
+				"ccaef4fd-4588-436a-be84-3b571073cfc6",
+				"f7627e89-42e3-40d4-9c5b-e8693d42cc86",
+				"ad4acf62-7dc8-4bd9-8c46-773fc5d2a614"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {},
+			"createdAt": "2022-12-11T16:13:04.864Z",
+			"folders": [],
+			"requests": [
+				{
+					"id": "ad4acf62-7dc8-4bd9-8c46-773fc5d2a614",
+					"uid": "0-ad4acf62-7dc8-4bd9-8c46-773fc5d2a614",
+					"name": "Reservation",
+					"url": "{{host}}{{reservation_port}}/api/reservations/1234",
+					"description": null,
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [
+						{
+							"key": "username",
+							"value": "admin",
+							"description": "",
+							"type": "default",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"description": "",
+							"type": "default",
+							"enabled": true
+						}
+					],
+					"method": "DELETE",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "4026c785-4d8a-43a2-8781-b5ebf45792cf",
+					"rawModeData": "",
+					"headers": "username: admin\npassword: admin\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "ccaef4fd-4588-436a-be84-3b571073cfc6",
+					"uid": "0-ccaef4fd-4588-436a-be84-3b571073cfc6",
+					"name": "Reservation",
+					"url": "{{host}}{{reservation_port}}/api/reservations/",
+					"description": null,
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [
+						{
+							"key": "username",
+							"value": "admin",
+							"description": "",
+							"type": "default",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"description": "",
+							"type": "default",
+							"enabled": true
+						}
+					],
+					"method": "POST",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "4026c785-4d8a-43a2-8781-b5ebf45792cf",
+					"rawModeData": "{\n    \"reservationId\" : \"1234\",\n    \"bookName\" : \"TestBook\",\n    \"quantity\" : \"1\",\n    \"numberOfDays\" : \"7\"\n}",
+					"headers": "username: admin\npassword: admin\n",
+					"pathVariables": {}
+				},
+				{
+					"id": "f7627e89-42e3-40d4-9c5b-e8693d42cc86",
+					"uid": "0-f7627e89-42e3-40d4-9c5b-e8693d42cc86",
+					"name": "Reservation",
+					"url": "{{host}}{{inventory_port}}/api/reservations/1234",
+					"description": null,
+					"data": [],
+					"dataOptions": {
+						"raw": {
+							"language": "json"
+						}
+					},
+					"dataMode": "raw",
+					"headerData": [
+						{
+							"key": "username",
+							"value": "admin",
+							"description": "",
+							"type": "default",
+							"enabled": true
+						}
+					],
+					"method": "GET",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "4026c785-4d8a-43a2-8781-b5ebf45792cf",
+					"rawModeData": "{\n    \"reservationId\" : \"1234\",\n    \"bookName\" : \"TestBook\",\n    \"quantity\" : \"5\",\n    \"numberOfDays\" : \"7\"\n}",
+					"headers": "username: admin\n",
+					"pathVariables": {}
+				}
+			]
 		}
 	],
 	"environments": [
@@ -287,6 +455,12 @@
 					"value": ":8080",
 					"type": "default",
 					"enabled": true
+				},
+				{
+					"key": "reservation_port",
+					"value": ":8084",
+					"type": "default",
+					"enabled": true
 				}
 			]
 		},
@@ -305,11 +479,23 @@
 					"value": "",
 					"type": "default",
 					"enabled": true
+				},
+				{
+					"key": "reservation_port",
+					"value": "",
+					"type": "default",
+					"enabled": true
+				},
+				{
+					"key": "user_port",
+					"value": "",
+					"type": "default",
+					"enabled": true
 				}
 			]
 		},
 		{
-			"id": "6891f1e7-a898-49bf-b9ce-11c53f6d8cb9",
+			"id": "527d9015-f0a7-4319-a6de-16523b36b3bd",
 			"name": "My Workspace - globals",
 			"values": []
 		}
