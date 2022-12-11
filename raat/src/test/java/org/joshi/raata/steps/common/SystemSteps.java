@@ -12,6 +12,7 @@ import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.junit.jupiter.api.Assertions;
@@ -23,6 +24,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SystemSteps {
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -159,6 +162,16 @@ public class SystemSteps {
         }
     }
 
+    @Then("I get an {string} error")
+    public void iGetAnUnauthorizedErrorWithStatus(String error) {
+        if (error.equals("Unauthorized")) {
+            assertEquals(401, TestData.getInstance().statusCode);
+        } else if (error.equals("Not Found")) {
+            assertEquals(404, TestData.getInstance().statusCode);
+        } else {
+            throw new RuntimeException("Unknown error '" + error + "'.");
+        }
+    }
 
     public static <T> HttpPost getAuthPostReq(String uri, T data) throws JsonProcessingException {
         var post = new HttpPost(uri);
@@ -167,5 +180,4 @@ public class SystemSteps {
         post.setEntity(new StringEntity(objectMapper.writeValueAsString(data)));
         return post;
     }
-
 }

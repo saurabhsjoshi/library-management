@@ -8,11 +8,13 @@ import io.cucumber.java.BeforeAll;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.core5.http.HttpStatus;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.joshi.raata.steps.common.RestClient;
+import org.joshi.raata.steps.common.SystemSteps;
 import org.joshi.raata.steps.common.TestData;
 
 import java.io.IOException;
@@ -36,7 +38,7 @@ public class InventorySvcStepDefs {
         var data = dataTable.asMap(String.class, String.class);
         var post = getAuthPostReq(INVENTORY_API, data);
         try (var response = RestClient.getClient().execute(post)) {
-            TestData.getInstance().data = String.valueOf(response.getCode());
+            TestData.getInstance().statusCode = response.getCode();
         }
     }
 
@@ -44,8 +46,8 @@ public class InventorySvcStepDefs {
     public void iRetrieveTheBookWithBookNameTestBook(String bookname) throws IOException, ParseException {
         var get = new HttpGet(INVENTORY_API + bookname);
         try (var response = RestClient.getClient().execute(get)) {
-            assertEquals(HttpStatus.SC_OK, response.getCode());
             TestData.getInstance().data = EntityUtils.toString(response.getEntity());
+            TestData.getInstance().statusCode = response.getCode();
         }
     }
 
@@ -61,10 +63,22 @@ public class InventorySvcStepDefs {
         assertEquals(data, resp);
     }
 
-    @Then("I get an {string} error")
-    public void iGetAnUnauthorizedErrorWithStatus(String error) {
-        if (error.equals("Unauthorized")) {
-            assertEquals("401", TestData.getInstance().data);
+    @And("I update the quantity of a book with name {string} as follows")
+    public void iUpdateTheQuantityOfABookWithNameTestBookAsFollows(String bookname, DataTable dataTable) throws IOException {
+        var req = SystemSteps.getAuthPostReq(INVENTORY_API + bookname + "/add",
+                dataTable.asMap(String.class, String.class));
+        try (var resp = RestClient.getClient().execute(req)) {
+            assertEquals(HttpStatus.SC_OK, resp.getCode());
+        }
+    }
+
+    @And("I delete a book with name {string}")
+    public void iDeleteABookWithNameTest(String bookName) throws IOException {
+        var req = new HttpDelete(INVENTORY_API + bookName);
+        req.setHeader("username", TestData.getInstance().username);
+        req.setHeader("password", TestData.getInstance().password);
+        try (var resp = RestClient.getClient().execute(req)) {
+            assertEquals(HttpStatus.SC_OK, resp.getCode());
         }
     }
 }

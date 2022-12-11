@@ -12,6 +12,8 @@ public class TestData {
      */
     public String data;
 
+    public int statusCode;
+
     private static TestData instance = null;
 
     private TestData() {
