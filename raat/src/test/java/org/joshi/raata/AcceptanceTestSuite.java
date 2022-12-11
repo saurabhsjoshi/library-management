@@ -12,8 +12,6 @@ import static io.cucumber.junit.platform.engine.Constants.PLUGIN_PROPERTY_NAME;
  */
 @Suite
 @IncludeEngines("cucumber")
-//@SelectClasspathResource("org/joshi/raata")
-//@ConfigurationParameter(key = GLUE_PROPERTY_NAME, value = "org.joshi.raata")
 @ConfigurationParameter(key = PLUGIN_PROPERTY_NAME, value = "pretty")
 @ConfigurationParameter(key = FEATURES_PROPERTY_NAME, value = "src/test/resources")
 public class AcceptanceTestSuite {
