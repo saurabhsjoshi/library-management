@@ -88,14 +88,14 @@ public class PerformanceTestFilter implements Filter {
                         TestSpec parametersForTest = (TestSpec) method.invoke(context.getBean(handler.getBeanType()));
 
                         String jsonSchema = JSONConverter
-                                .getJsonSchema(parametersForTest.getTestParameter().getClass());
+                                .getJsonSchema(parametersForTest.testParameter().getClass());
                         if (spec != null) {
                             TestSpecification.joinSpec(spec, httpMethod, description,
-                                    parametersForTest.getTestParameter(), parametersForTest.getValidationData(),
+                                    parametersForTest.testParameter(), parametersForTest.validationData(),
                                     jsonSchema);
                         } else {
                             spec = TestSpecification.build(httpMethod, description,
-                                    parametersForTest.getTestParameter(), parametersForTest.getValidationData(),
+                                    parametersForTest.testParameter(), parametersForTest.validationData(),
                                     jsonSchema);
                         }
                         if (logger.isDebugEnabled()) {
