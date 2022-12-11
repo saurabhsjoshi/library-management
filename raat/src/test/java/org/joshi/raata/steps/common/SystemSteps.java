@@ -43,16 +43,16 @@ public class SystemSteps {
 
     @After
     public void teardown() {
-        //   stopServices();
+        stopServices();
     }
 
     @Given("The library management system is running")
-    public void systemIsRunning() {
-//        var services = getRunningServices();
-//        if (!services.isEmpty()) {
-//            stopServices();
-//        }
-//        startServices();
+    public void systemIsRunning() throws InterruptedException {
+        var services = getRunningServices();
+        if (!services.isEmpty()) {
+            stopServices();
+        }
+        startServices();
     }
 
     private static DockerClient getDockerClient() {
@@ -123,7 +123,7 @@ public class SystemSteps {
         }
     }
 
-    private static void startServices() {
+    private static void startServices() throws InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder("docker-compose", "up", "--detach");
         processBuilder.directory(new File(".."));
         try {
@@ -152,13 +152,10 @@ public class SystemSteps {
             healthy = getRunningContainers(dockerClient)
                     .filter(c -> pattern.matcher(c.getStatus()).find())
                     .count();
-            try {
-                var sleepPeriod = 500;
-                currentPeriod += sleepPeriod;
-                Thread.sleep(sleepPeriod);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+
+            var sleepPeriod = 500;
+            currentPeriod += sleepPeriod;
+            Thread.sleep(sleepPeriod);
         }
     }
 
