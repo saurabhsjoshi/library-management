@@ -136,8 +136,8 @@ public class SystemSteps {
 
         var dockerClient = getDockerClient();
 
-        // Wait for 30 seconds
-        long retryPeriod = Duration.ofSeconds(30).toMillis();
+        // Some machines can take longer to start container so set wait time to 500 millis
+        long retryPeriod = Duration.ofSeconds(500).toMillis();
         long currentPeriod = 0;
 
         long healthy = 0;
@@ -164,12 +164,11 @@ public class SystemSteps {
 
     @Then("I get an {string} error")
     public void iGetAnUnauthorizedErrorWithStatus(String error) {
-        if (error.equals("Unauthorized")) {
-            assertEquals(401, TestData.getInstance().statusCode);
-        } else if (error.equals("Not Found")) {
-            assertEquals(404, TestData.getInstance().statusCode);
-        } else {
-            throw new RuntimeException("Unknown error '" + error + "'.");
+        switch (error) {
+            case "Unauthorized" -> assertEquals(401, TestData.getInstance().statusCode);
+            case "Not Found" -> assertEquals(404, TestData.getInstance().statusCode);
+            case "Bad Request" -> assertEquals(400, TestData.getInstance().statusCode);
+            default -> throw new RuntimeException("Unknown error '" + error + "'.");
         }
     }
 
