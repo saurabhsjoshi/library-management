@@ -10,13 +10,11 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
-import org.apache.hc.core5.http.HttpStatus;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.joshi.raata.steps.common.RestClient;
 import org.joshi.raata.steps.common.SystemSteps;
 import org.joshi.raata.steps.common.TestData;
-import org.junit.jupiter.api.Assertions;
 
 import java.io.IOException;
 import java.util.Map;
@@ -29,7 +27,7 @@ public class ReservationSvcStepDefs {
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
 
-    private void deleteReservation() throws IOException {
+    private void deleteReservation() {
         var delete = new HttpDelete(RESERVATION_URI + "1234");
         delete.setHeader("username", TestData.getInstance().username);
         delete.setHeader("password", TestData.getInstance().password);
