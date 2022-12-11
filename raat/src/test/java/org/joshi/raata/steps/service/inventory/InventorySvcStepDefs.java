@@ -22,6 +22,7 @@ import java.util.Map;
 
 import static org.joshi.raata.steps.common.SystemSteps.getAuthPostReq;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class InventorySvcStepDefs {
     private static final String INVENTORY_API = "http://localhost/api/inventory/";
@@ -60,7 +61,12 @@ public class InventorySvcStepDefs {
 
         var resp = objectMapper.readValue(TestData.getInstance().data, typeRef);
 
-        assertEquals(data, resp);
+        for (var entry : data.entrySet()) {
+            var attr = resp.get(entry.getKey());
+            assertNotNull(attr);
+            assertEquals(entry.getValue(), attr);
+        }
+
     }
 
     @And("I update the quantity of a book with name {string} as follows")
