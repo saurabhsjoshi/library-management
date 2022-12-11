@@ -1,5 +1,7 @@
 package org.joshi.raata.steps.common;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.model.Container;
 import com.github.dockerjava.api.model.Network;
@@ -10,6 +12,8 @@ import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.github.dockerjava.transport.DockerHttpClient;
 import io.cucumber.java.After;
 import io.cucumber.java.en.Given;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.File;
@@ -21,6 +25,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class SystemSteps {
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     // List of microservices
     private final static List<String> CONTAINERS = List.of(
@@ -35,16 +40,16 @@ public class SystemSteps {
 
     @After
     public void teardown() {
-        stopServices();
+        //   stopServices();
     }
 
     @Given("The library management system is running")
     public void systemIsRunning() {
-        var services = getRunningServices();
-        if (!services.isEmpty()) {
-            stopServices();
-        }
-        startServices();
+//        var services = getRunningServices();
+//        if (!services.isEmpty()) {
+//            stopServices();
+//        }
+//        startServices();
     }
 
     private static DockerClient getDockerClient() {
@@ -128,8 +133,8 @@ public class SystemSteps {
 
         var dockerClient = getDockerClient();
 
-        // Wait for 10 seconds
-        long retryPeriod = Duration.ofSeconds(10).toMillis();
+        // Wait for 30 seconds
+        long retryPeriod = Duration.ofSeconds(30).toMillis();
         long currentPeriod = 0;
 
         long healthy = 0;
@@ -152,6 +157,15 @@ public class SystemSteps {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+
+    public static <T> HttpPost getAuthPostReq(String uri, T data) throws JsonProcessingException {
+        var post = new HttpPost(uri);
+        post.setHeader("username", TestData.getInstance().username);
+        post.setHeader("password", TestData.getInstance().password);
+        post.setEntity(new StringEntity(objectMapper.writeValueAsString(data)));
+        return post;
     }
 
 }

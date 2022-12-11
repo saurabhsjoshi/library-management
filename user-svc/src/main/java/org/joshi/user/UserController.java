@@ -54,7 +54,8 @@ public class UserController {
     public TestSpec<LibraryUser> postUserSpec() throws IOException {
         var testUser = getTestUser();
         return new TestSpec<>(testUser, new TestValidationsBuilder()
-                .addHeaderParameter(HttpHeaderFields.CREDENTIALS, "admin:admin")
+                .addHeaderParameter(HttpHeaderFields.USERNAME, "admin")
+                .addHeaderParameter(HttpHeaderFields.PASSWORD, "admin")
                 .addHeaderParameter(HttpHeaderFields.STATUS, String.valueOf(HttpStatus.CREATED.value()))
                 .buildBodyValidationFromEntity(testUser));
     }

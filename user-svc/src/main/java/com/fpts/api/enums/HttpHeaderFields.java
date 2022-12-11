@@ -6,7 +6,8 @@ public enum HttpHeaderFields {
     STATUS("Status"),
     CONTENT_LENGTH("Content-Length"),
     CONTENT_TYPE("Content-Type"),
-    CREDENTIALS("Credentials");
+    USERNAME("username"),
+    PASSWORD("username");
 
     private final String field;
 
