@@ -50,28 +50,55 @@ public class UserController {
         return repository.save(user);
     }
 
+    @PutMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public LibraryUser updateUser(@RequestBody LibraryUser user) {
+        return repository.save(user);
+    }
+
+    @DeleteMapping("/{username}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteUser(@PathVariable String username) {
+        repository.deleteById(username);
+    }
+
     @PerformanceTest(path = "/api/users/", httpMethod = HttpMethodEnum.POST, description = "Create a library user")
     public TestSpec<LibraryUser> postUserSpec() throws IOException {
         var testUser = getTestUser();
         return new TestSpec<>(testUser, new TestValidationsBuilder()
-                .addHeaderParameter(HttpHeaderFields.USERNAME, "admin")
-                .addHeaderParameter(HttpHeaderFields.PASSWORD, "admin")
                 .addHeaderParameter(HttpHeaderFields.STATUS, String.valueOf(HttpStatus.CREATED.value()))
                 .buildBodyValidationFromEntity(testUser));
     }
 
-    @PerformanceTest(path = "/api/users/", httpMethod = HttpMethodEnum.GET, description = "Get all users")
+    @PerformanceTest(path = "/api/users/", httpMethod = HttpMethodEnum.GET, description = "Get user by username")
     public TestSpec<GetTestParameter> getUsersSpec() throws IOException {
         GetTestParameter testParameter = new GetTestParameter("username", "testUser");
         var testUser = getTestUser();
-        return new TestSpec<>(testParameter, new TestValidationsBuilder().buildHeaderStatus200AndEntityBody(testUser));
+        return new TestSpec<>(testParameter, new TestValidationsBuilder()
+                .addHeaderParameter(HttpHeaderFields.STATUS, String.valueOf(HttpStatus.OK.value()))
+                .buildBodyValidationFromEntity(testUser));
+    }
+
+    @PerformanceTest(path = "/api/users/", httpMethod = HttpMethodEnum.PUT, description = "Create a library user")
+    public TestSpec<LibraryUser> putUserSpec() throws IOException {
+        var testUser = getTestUser();
+        return new TestSpec<>(testUser, new TestValidationsBuilder()
+                .addHeaderParameter(HttpHeaderFields.STATUS, String.valueOf(HttpStatus.OK.value()))
+                .buildBodyValidationFromEntity(testUser));
+    }
+
+    @PerformanceTest(path = "/api/users/", httpMethod = HttpMethodEnum.DELETE, description = "Delete user by username")
+    public TestSpec<GetTestParameter> deleteUserSpec() throws IOException {
+        GetTestParameter testParameter = new GetTestParameter("username", "testUser");
+        return new TestSpec<>(testParameter, new TestValidationsBuilder()
+                .addHeaderParameter(HttpHeaderFields.STATUS, String.valueOf(HttpStatus.OK.value())));
     }
 
     private static LibraryUser getTestUser() {
         var testUser = new LibraryUser();
         testUser.setUsername("testUser");
         testUser.setPassword("testPassword");
-        testUser.setDisplayName("Test Name");
+        testUser.setDisplayName("TestName");
 
         return testUser;
     }

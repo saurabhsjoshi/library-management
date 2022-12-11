@@ -37,6 +37,7 @@ public class UserApplication {
         var admin = new LibraryUser();
         admin.setUsername("admin");
         admin.setPassword("admin");
+        admin.setDisplayName("AdminUser");
         repository.save(admin);
 
         log.info("Created admin user.");
