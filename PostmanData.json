@@ -2,6 +2,46 @@
 	"version": 1,
 	"collections": [
 		{
+			"id": "186f9df7-1bbb-4e23-9038-03cf96138aeb",
+			"uid": "0-186f9df7-1bbb-4e23-9038-03cf96138aeb",
+			"name": "User Service",
+			"description": null,
+			"auth": null,
+			"events": null,
+			"variables": [],
+			"order": [
+				"ed097829-5cab-4871-bb61-68b2a6571fe8"
+			],
+			"folders_order": [],
+			"protocolProfileBehavior": {},
+			"createdAt": "2022-12-10T21:29:18.629Z",
+			"folders": [],
+			"requests": [
+				{
+					"id": "ed097829-5cab-4871-bb61-68b2a6571fe8",
+					"uid": "0-ed097829-5cab-4871-bb61-68b2a6571fe8",
+					"name": "Users",
+					"url": "{{host}}{{user_port}}/api/users/",
+					"description": "",
+					"data": null,
+					"dataOptions": null,
+					"dataMode": null,
+					"headerData": null,
+					"method": "OPTIONS",
+					"pathVariableData": [],
+					"queryParams": [],
+					"auth": null,
+					"events": null,
+					"folder": null,
+					"responses_order": [],
+					"currentHelper": null,
+					"helperAttributes": null,
+					"collectionId": "186f9df7-1bbb-4e23-9038-03cf96138aeb",
+					"pathVariables": {}
+				}
+			]
+		},
+		{
 			"id": "24717a6b-f264-4b93-8517-a5e7ab68b517",
 			"uid": "0-24717a6b-f264-4b93-8517-a5e7ab68b517",
 			"name": "Inventory Service",
@@ -241,6 +281,12 @@
 					"value": ":8082",
 					"type": "default",
 					"enabled": true
+				},
+				{
+					"key": "user_port",
+					"value": ":8080",
+					"type": "default",
+					"enabled": true
 				}
 			]
 		},
@@ -263,7 +309,7 @@
 			]
 		},
 		{
-			"id": "34f2f504-5a31-4289-b29e-3deed73c6364",
+			"id": "6891f1e7-a898-49bf-b9ce-11c53f6d8cb9",
 			"name": "My Workspace - globals",
 			"values": []
 		}
