@@ -1,5 +1,7 @@
 # Library Management
+Project for COMP 5104/CSI 5134
 
+# Description
 A microservices based application that allows users to manage a library. It consists of the following services:
 
 1. `inventory-svc` The service that manages inventory of books
