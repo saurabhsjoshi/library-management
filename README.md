@@ -15,3 +15,7 @@ Two approaches have been explored as part of testing:
 
 1. Cucumber based acceptance tests based on RAATA (Reusable Automated Acceptance Testing Architecture)
 2. Dynamically generated test cases using FPTS (Framework for Performance Test Specification)
+
+## Architecture
+
+![Project Architecture](./project_architecture.png)
