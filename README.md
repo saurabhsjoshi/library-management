@@ -19,3 +19,8 @@ Two approaches have been explored as part of testing:
 ## Architecture
 
 ![Project Architecture](./project_architecture.png)
+
+## Service Dependency Graph
+
+![Service Dependency Graph (SDG)](./project_sdg.png)
+
